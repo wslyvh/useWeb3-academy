@@ -12,7 +12,7 @@ interface Props {
   children: ReactNode
 }
 
-const { provider, webSocketProvider } = configureChains(ETH_CHAINS, [
+const providers = [
   jsonRpcProvider({
     rpc: (chain) => {
       if (chain.id === 10) {
@@ -24,10 +24,17 @@ const { provider, webSocketProvider } = configureChains(ETH_CHAINS, [
       return null
     },
   }),
-  infuraProvider({ apiKey: process.env.NEXT_PUBLIC_INFURA_KEY ?? '' }),
-  alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_ALCHEMY_KEY ?? '' }),
   publicProvider(),
-])
+]
+
+if (process.env.NEXT_PUBLIC_INFURA_KEY) {
+  providers.push(infuraProvider({ apiKey: process.env.NEXT_PUBLIC_INFURA_KEY }))
+}
+if (process.env.NEXT_PUBLIC_ALCHEMY_KEY) {
+  providers.push(alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_ALCHEMY_KEY }))
+}
+
+const { provider, webSocketProvider } = configureChains(ETH_CHAINS, providers)
 
 const client = createClient(
   getDefaultClient({
