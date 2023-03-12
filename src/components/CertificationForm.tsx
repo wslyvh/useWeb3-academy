@@ -51,7 +51,7 @@ export function CertificationForm(props: Props) {
   const [test, setTest] = useState<any>()
   const [submitButtonState, setSubmitButtonState] = useState(false)
   const [clickedButton, setClickedButton] = useState<'grade' | 'submit' | ''>('')
-  const provider = useProvider()
+  /* const provider = useProvider() */
   const { address } = useAccount()
 
   const toast = useToast()
@@ -63,7 +63,7 @@ export function CertificationForm(props: Props) {
       setTest(test)
     }
     fetchData()
-  }, [loadTest])
+  }, [props.item.testId, props.item.openAnswerHashes])
 
   function setToast(title: string, description: string, status: 'success' | 'error' | 'info') {
     toast({
