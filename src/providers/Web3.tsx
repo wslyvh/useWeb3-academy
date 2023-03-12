@@ -1,5 +1,8 @@
 import { configureChains, createClient, WagmiConfig } from 'wagmi'
 import { publicProvider } from 'wagmi/providers/public'
+import { jsonRpcProvider } from '@wagmi/core/providers/jsonRpc'
+import { infuraProvider } from '@wagmi/core/providers/infura'
+import { alchemyProvider } from '@wagmi/core/providers/alchemy'
 import { ConnectKitProvider, getDefaultClient } from 'connectkit'
 import { ETH_CHAINS, SITE_NAME } from 'utils/config'
 import { useColorMode } from '@chakra-ui/react'
@@ -9,7 +12,22 @@ interface Props {
   children: ReactNode
 }
 
-const { provider, webSocketProvider } = configureChains(ETH_CHAINS, [publicProvider()])
+const { provider, webSocketProvider } = configureChains(ETH_CHAINS, [
+  jsonRpcProvider({
+    rpc: (chain) => {
+      if (chain.id === 10) {
+        return {
+          http: 'https://optimism-mainnet.public.blastapi.io',
+        }
+      }
+
+      return null
+    },
+  }),
+  infuraProvider({ apiKey: process.env.NEXT_PUBLIC_INFURA_KEY ?? '' }),
+  alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_ALCHEMY_KEY ?? '' }),
+  publicProvider(),
+])
 
 const client = createClient(
   getDefaultClient({
