@@ -17,7 +17,7 @@ const providers = [
     rpc: (chain) => {
       if (chain.id === 10) {
         return {
-          http: 'https://optimism-mainnet.public.blastapi.io',
+          http: `https://serene-spring-borough.optimism.discover.quiknode.pro/${process.env.QUICKNODE_OPTIMISM_KEY}/`,
         }
       }
 
