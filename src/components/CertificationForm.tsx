@@ -35,9 +35,9 @@ interface Props {
 async function loadTest(testId: number, openAnswerHashes: string[]) {
   try {
     const solveModeTest = await bqTest.solveMode(
-      testId, 
-      new ethers.providers.JsonRpcProvider(`https://op.getblock.io/${process.env.NEXT_PUBLIC_OPTIMISM_KEY}/mainnet/`), 
-      DEPLOYED_CONTRACTS.TestCreator, 
+      testId,
+      new ethers.providers.JsonRpcProvider(`https://op.getblock.io/${process.env.NEXT_PUBLIC_OPTIMISM_KEY}/mainnet/`),
+      DEPLOYED_CONTRACTS.TestCreator,
       openAnswerHashes
     )
     return solveModeTest
@@ -45,7 +45,7 @@ async function loadTest(testId: number, openAnswerHashes: string[]) {
     console.log('Unable to load test')
     console.error(e)
   }
-} 
+}
 
 export function CertificationForm(props: Props) {
   const [test, setTest] = useState<any>()
