@@ -20,6 +20,7 @@ import {
   Spinner,
 } from '@chakra-ui/react'
 import { bqTest } from 'bq-core'
+import { ethers } from 'ethers'
 import { useEffect, FormEvent, useState } from 'react'
 import { useAccount, useProvider } from 'wagmi'
 import { fetchSigner } from '@wagmi/core'
@@ -30,6 +31,21 @@ interface Props {
   className?: string
   item: Certification
 }
+
+async function loadTest(testId: number, openAnswerHashes: string[]) {
+  try {
+    const solveModeTest = await bqTest.solveMode(
+      testId, 
+      new ethers.providers.JsonRpcProvider(`https://op.getblock.io/${process.env.NEXT_PUBLIC_OPTIMISM_KEY}/mainnet/`), 
+      DEPLOYED_CONTRACTS.TestCreator, 
+      openAnswerHashes
+    )
+    return solveModeTest
+  } catch (e) {
+    console.log('Unable to load test')
+    console.error(e)
+  }
+} 
 
 export function CertificationForm(props: Props) {
   const [test, setTest] = useState<any>()
@@ -42,17 +58,12 @@ export function CertificationForm(props: Props) {
   const className = props.className ?? ''
 
   useEffect(() => {
-    const loadTest = async () => {
-      try {
-        const solveModeTest = await bqTest.solveMode(props.item.testId, provider, DEPLOYED_CONTRACTS.TestCreator, props.item.openAnswerHashes)
-        setTest(solveModeTest)
-      } catch (e) {
-        console.log('Unable to load test')
-        console.error(e)
-      }
+    const fetchData = async () => {
+      const test = await loadTest(props.item.testId, props.item.openAnswerHashes)
+      setTest(test)
     }
-    loadTest()
-  }, [props.item, provider])
+    fetchData()
+  }, [loadTest])
 
   function setToast(title: string, description: string, status: 'success' | 'error' | 'info') {
     toast({
