@@ -15,9 +15,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <Web3Provider>
         {isMounted && (
           <Layout>
-            <ErrorBoundary>
-              <Component {...pageProps} />
-            </ErrorBoundary>
+            <Component {...pageProps} />
           </Layout>
         )}
       </Web3Provider>

@@ -26,6 +26,7 @@
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
     "@next/font": "13.1.1",
+    "@sentry/nextjs": "^7.42.0",
     "@wagmi/chains": "^0.1.7",
     "bq-core": "https://github.com/0xdeenz/bq-core.git",
     "connectkit": "^1.1.1",
