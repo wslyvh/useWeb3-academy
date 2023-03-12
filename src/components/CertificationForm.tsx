@@ -43,8 +43,13 @@ export function CertificationForm(props: Props) {
 
   useEffect(() => {
     const loadTest = async () => {
-      const solveModeTest = await bqTest.solveMode(props.item.testId, provider, DEPLOYED_CONTRACTS.TestCreator, props.item.openAnswerHashes)
-      setTest(solveModeTest)
+      try {
+        const solveModeTest = await bqTest.solveMode(props.item.testId, provider, DEPLOYED_CONTRACTS.TestCreator, props.item.openAnswerHashes)
+        setTest(solveModeTest)
+      } catch (e) {
+        console.log('Unable to load test')
+        console.error(e)
+      }
     }
     loadTest()
   }, [props.item, provider])
