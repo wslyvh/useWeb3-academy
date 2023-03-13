@@ -26,6 +26,7 @@ import { useAccount } from 'wagmi'
 import { fetchSigner } from '@wagmi/core'
 import { Certification } from 'types/certifications'
 import { DEPLOYED_CONTRACTS, OPTIMISM_JSON_RPC } from 'utils/config'
+import { usePlausible } from 'next-plausible'
 
 interface Props {
   className?: string
@@ -48,6 +49,7 @@ async function loadTest(testId: number, openAnswerHashes: string[]) {
 }
 
 export function CertificationForm(props: Props) {
+  const plausible = usePlausible()
   const [test, setTest] = useState<any>()
   const [submitButtonState, setSubmitButtonState] = useState(false)
   const [clickedButton, setClickedButton] = useState<'grade' | 'submit' | ''>('')
@@ -76,6 +78,8 @@ export function CertificationForm(props: Props) {
   }
 
   function handleGrade(openAnswers: string[], multipleChoiceAnswers: number[]) {
+    plausible('grade')
+
     const grade = test.gradeSolution({
       openAnswers,
       multipleChoiceAnswers,
@@ -93,6 +97,8 @@ export function CertificationForm(props: Props) {
   }
 
   async function handleSubmit(openAnswers: string[], multipleChoiceAnswers: number[]) {
+    plausible('submit')
+
     if (!address) {
       setToast('You need to connect your wallet first', '', 'error')
       return
