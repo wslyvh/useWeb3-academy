@@ -51,7 +51,6 @@ export function CertificationForm(props: Props) {
   const [test, setTest] = useState<any>()
   const [submitButtonState, setSubmitButtonState] = useState(false)
   const [clickedButton, setClickedButton] = useState<'grade' | 'submit' | ''>('')
-  /* const provider = useProvider() */
   const { address } = useAccount()
 
   const toast = useToast()

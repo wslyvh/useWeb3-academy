@@ -1,8 +1,5 @@
 import { configureChains, createClient, WagmiConfig } from 'wagmi'
 import { publicProvider } from 'wagmi/providers/public'
-/* import { jsonRpcProvider } from '@wagmi/core/providers/jsonRpc'
-import { infuraProvider } from '@wagmi/core/providers/infura'
-import { alchemyProvider } from '@wagmi/core/providers/alchemy' */
 import { ConnectKitProvider, getDefaultClient } from 'connectkit'
 import { ETH_CHAINS, SITE_NAME } from 'utils/config'
 import { useColorMode } from '@chakra-ui/react'
@@ -11,28 +8,6 @@ import { ReactNode } from 'react'
 interface Props {
   children: ReactNode
 }
-
-/* const providers = [
-  jsonRpcProvider({
-    rpc: (chain) => {
-      if (chain.id === 10) {
-        return {
-          http: `https://opt-mainnet.g.alchemy.com/v2/demo`,
-        }
-      }
-
-      return null
-    },
-  }),
-  publicProvider(),
-]
-
-if (process.env.NEXT_PUBLIC_INFURA_KEY) {
-  providers.push(infuraProvider({ apiKey: process.env.NEXT_PUBLIC_INFURA_KEY }))
-}
-if (process.env.NEXT_PUBLIC_ALCHEMY_KEY) {
-  providers.push(alchemyProvider({ apiKey: process.env.NEXT_PUBLIC_ALCHEMY_KEY }))
-} */
 
 const { provider, webSocketProvider } = configureChains(ETH_CHAINS, [publicProvider()])
 
