@@ -229,8 +229,10 @@ export function CertificationForm(props: Props) {
                   <Flex direction="column">
                     {i.answers.map((a) => {
                       return (
-                        <Radio key={a} value={a}>
-                          {a}
+                        <Radio key={a} value={a} my={1}>
+                          <Text as="span" wordBreak="break-word">
+                            {a}
+                          </Text>
                         </Radio>
                       )
                     })}
