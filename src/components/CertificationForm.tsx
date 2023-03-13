@@ -22,10 +22,10 @@ import {
 import { bqTest } from 'bq-core'
 import { ethers } from 'ethers'
 import { useEffect, FormEvent, useState } from 'react'
-import { useAccount, useProvider } from 'wagmi'
+import { useAccount } from 'wagmi'
 import { fetchSigner } from '@wagmi/core'
 import { Certification } from 'types/certifications'
-import { DEPLOYED_CONTRACTS } from 'utils/config'
+import { DEPLOYED_CONTRACTS, OPTIMISM_JSON_RPC } from 'utils/config'
 
 interface Props {
   className?: string
@@ -36,7 +36,7 @@ async function loadTest(testId: number, openAnswerHashes: string[]) {
   try {
     const solveModeTest = await bqTest.solveMode(
       testId,
-      new ethers.providers.JsonRpcProvider(`https://op.getblock.io/${process.env.NEXT_PUBLIC_OPTIMISM_KEY}/mainnet/`),
+      new ethers.providers.JsonRpcProvider(OPTIMISM_JSON_RPC),
       DEPLOYED_CONTRACTS.TestCreator,
       openAnswerHashes
     )
