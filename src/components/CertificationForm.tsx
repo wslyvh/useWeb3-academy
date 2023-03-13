@@ -20,39 +20,50 @@ import {
   Spinner,
 } from '@chakra-ui/react'
 import { bqTest } from 'bq-core'
+import { ethers } from 'ethers'
 import { useEffect, FormEvent, useState } from 'react'
-import { useAccount, useProvider } from 'wagmi'
+import { useAccount } from 'wagmi'
 import { fetchSigner } from '@wagmi/core'
 import { Certification } from 'types/certifications'
-import { DEPLOYED_CONTRACTS } from 'utils/config'
+import { DEPLOYED_CONTRACTS, OPTIMISM_JSON_RPC } from 'utils/config'
 
 interface Props {
   className?: string
   item: Certification
 }
 
+async function loadTest(testId: number, openAnswerHashes: string[]) {
+  try {
+    const solveModeTest = await bqTest.solveMode(
+      testId,
+      new ethers.providers.JsonRpcProvider(OPTIMISM_JSON_RPC),
+      DEPLOYED_CONTRACTS.TestCreator,
+      openAnswerHashes
+    )
+    return solveModeTest
+  } catch (e) {
+    console.log('Unable to load test')
+    console.error(e)
+  }
+}
+
 export function CertificationForm(props: Props) {
   const [test, setTest] = useState<any>()
   const [submitButtonState, setSubmitButtonState] = useState(false)
   const [clickedButton, setClickedButton] = useState<'grade' | 'submit' | ''>('')
-  const provider = useProvider()
+  /* const provider = useProvider() */
   const { address } = useAccount()
 
   const toast = useToast()
   const className = props.className ?? ''
 
   useEffect(() => {
-    const loadTest = async () => {
-      try {
-        const solveModeTest = await bqTest.solveMode(props.item.testId, provider, DEPLOYED_CONTRACTS.TestCreator, props.item.openAnswerHashes)
-        setTest(solveModeTest)
-      } catch (e) {
-        console.log('Unable to load test')
-        console.error(e)
-      }
+    const fetchData = async () => {
+      const test = await loadTest(props.item.testId, props.item.openAnswerHashes)
+      setTest(test)
     }
-    loadTest()
-  }, [props.item, provider])
+    fetchData()
+  }, [props.item.testId, props.item.openAnswerHashes])
 
   function setToast(title: string, description: string, status: 'success' | 'error' | 'info') {
     toast({
