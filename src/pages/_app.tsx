@@ -4,21 +4,24 @@ import { Web3Provider } from 'providers/Web3'
 import { ChakraProvider } from 'providers/Chakra'
 import { useIsMounted } from 'hooks/useIsMounted'
 import { Seo } from 'components/layout/Seo'
-import ErrorBoundary from 'components/ErrorBoundary'
+import PlausibleProvider from 'next-plausible'
+import { SITE_DOMAIN } from 'utils/config'
 
 export default function App({ Component, pageProps }: AppProps) {
   const isMounted = useIsMounted()
 
   return (
-    <ChakraProvider>
-      <Seo />
-      <Web3Provider>
-        {isMounted && (
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
-        )}
-      </Web3Provider>
-    </ChakraProvider>
+    <PlausibleProvider domain={SITE_DOMAIN} trackOutboundLinks>
+      <ChakraProvider>
+        <Seo />
+        <Web3Provider>
+          {isMounted && (
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          )}
+        </Web3Provider>
+      </ChakraProvider>
+    </PlausibleProvider>
   )
 }
