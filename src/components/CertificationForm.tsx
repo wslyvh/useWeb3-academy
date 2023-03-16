@@ -117,7 +117,7 @@ export function CertificationForm(props: Props) {
     if (!grade.pass) {
       setToast(
         `Your solution does not pass this test`,
-        `You obtained ${grade.grade}/100 which is below the minimum grade of ${grade.minimumGrade}. You cannot obtain this credential.`,
+        `You need a full 100% to pass this test. Read each question carefully and try again.`,
         'error'
       )
       return
